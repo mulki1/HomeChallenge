@@ -1,0 +1,160 @@
+﻿@model DropDownDtos
+
+<div class="">
+    <form>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                @*<label for="deliverydate">Delivery Date</label>*@
+                <input type="date" class="form-control" id="searchDate">
+
+            </div>
+            <div class="form-group col-md-2">
+                <button type="button" id="btnSearch" class="btn btn-primary">Search</button>
+
+            </div>
+            <div class="form-group col-md-2">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Invoice</button>
+
+            </div>
+        </div>
+    </form>
+
+    <br />
+
+
+    <table id="table_id" class="display">
+        <thead>
+            <tr>
+                <th>Column 1</th>
+                <th>Column 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Invoice</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="amount">Invoice Amount</label>
+                            <input type="text" class="form-control" id="amount" placeholder="amount" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="currency"> Currency</label>
+                            <select id="currency" class="form-control">
+                                @foreach (var item in Model.Currencies)
+                                {
+                                    if (item.Name.ToLower() == "naira")
+                                    {
+                                        <option selected value="@item.Id" exchangeRate="@item.ExchangeValue">@item.Name</option>
+                                        continue;
+
+                                    }
+                                    <option value="@item.Id" exchangeRate="@item.ExchangeValue">@item.Name</option>
+
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="exchangeRate">Exchange Rate</label>
+                            <input type="text" class="form-control" id="exchangeRate" value="0" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="invoicedate">Invoice Date</label>
+                            <input type="date" class="form-control" id="invoicedate">
+
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="deliverydate">Delivery Date</label>
+                            <input type="date" class="form-control" id="deliverydate">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="settledate">Settle Date</label>
+                            <input type="date" class="form-control" id="settledate">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="vat"> Vat</label>
+                            <select id="vat" class="form-control">
+                                @foreach (var item in Model.Vats)
+                                {
+                                    <option value="@item.Id">@item.Value</option>
+
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-4">
+                            <label for="client"> Client</label>
+                            <select id="client" class="form-control">
+                                @foreach (var item in Model.Clients)
+                                {
+
+                                    <option value="@item.Id">@item.Name</option>
+
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="salesAgent">Sales Agent</label>
+                            <input type="text" class="form-control" id="salesAgent" placeholder="Sales Agent name">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="orderNumber">Order Number</label>
+                            <input type="text" class="form-control" id="orderNumber" placeholder="Order Number">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" placeholder="description"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAddInvoice" class="btn btn-primary">Add Invoice</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+<script>
+    $(document).ready( function () {
+    $('#table_id').DataTable();
+    } );
+        </script>
+    <script src="~/js/invoice.js"></script>
+
+
+}
