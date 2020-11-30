@@ -26,11 +26,11 @@ namespace HomeChallenge.Controllers
                 Vats = _repository.GetVats(),
                 Clients = _repository.GetClients(),
             };
-                return View(dropdown);
+            return View(dropdown);
         }
 
         [HttpPost]
-        public async Task <IActionResult> AddInvoice(Invoice invoice)
+        public async Task<IActionResult> AddInvoice(Invoice invoice)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace HomeChallenge.Controllers
                     return Json(new
                     {
                         Status = true,
-                        Message ="Invoice Successfully Added!",
+                        Message = "Invoice Successfully Added!",
                     });
                 }
 
@@ -69,21 +69,12 @@ namespace HomeChallenge.Controllers
             try
             {
                 var result = await _repository.GetInvoice(invoiceDate.date);
-                if(result.Count > 0)
-                {
-                    return Json(new
-                    {
-                        Status = true,
-                        Invoice = result,
-                    });
-                }
-
                 return Json(new
                 {
-                    Status = false,
-                    Message = "No invoice for specified date"
-
+                    Status = true,
+                    Invoice = result,
                 });
+
             }
             catch (Exception ex)
             {

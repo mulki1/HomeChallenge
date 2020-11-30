@@ -1,7 +1,5 @@
 ﻿$("#btnAddInvoice").on("click", AddInvoice);
 async function AddInvoice() {
-    debugger;
-
     let invoice = {
         Amount: $("#amount").val().trim(),
         CurrencyId: $('select[id=currency] option').filter(':selected').val(),
@@ -18,7 +16,6 @@ async function AddInvoice() {
 
 
     $.post("/Home/AddInvoice", invoice, function (data) {
-        debugger;
         if (data.status) {
             $('#exampleModal').modal('toggle');
             swal({
@@ -40,8 +37,6 @@ async function AddInvoice() {
 }
 
 $("#currency").change(function () {
-
-    debugger;
     let k = $('select[id=currency] option').filter(':selected').attr('exchangeRate');
     $("#exchangeRate").val(k)
 
@@ -56,8 +51,6 @@ async function SearchInvoice() {
 
 
     $.post("/Home/SearchInvoice", invoiceDate, function (data) {
-        debugger;
-        console.log("data", data);
         if (data.status) {
             table = $('#table_id').DataTable({
                 destroy: true,
@@ -102,12 +95,17 @@ async function SearchInvoice() {
                     },
 
                 ]
-            })
+            });
+
+            if (data.invoice.length < 1) {
+                toastr.error('No invoice for selected date', 'Error', {
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut",
+                    timeOut: 3000
+                });
+            }
 
         } else {
-            table = $('#table_id').DataTable({
-                destroy: true,
-            });
             toastr.error('No invoice for selected date' , 'Error', {
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut",
