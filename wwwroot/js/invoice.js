@@ -19,15 +19,14 @@ async function AddInvoice() {
 
     $.post("/Home/AddInvoice", invoice, function (data) {
         debugger;
-        if (data.status == "Success") {
-            $('.new-user').modal('toggle');
+        if (data.status) {
+            $('#exampleModal').modal('toggle');
             swal({
                 title: "Success!",
                 text: data.message,
                 icon: "success",
                 button: "close",
             });
-            location.reload();
         } else {
             toastr.error(data.message, 'Error', {
                 "showMethod": "fadeIn",
@@ -44,14 +43,13 @@ $("#currency").change(function () {
 
     debugger;
     let k = $('select[id=currency] option').filter(':selected').attr('exchangeRate');
-    $("#exchangeRate").val(k) 
-   
+    $("#exchangeRate").val(k)
+
 })
 
 $("#btnSearch").on("click", SearchInvoice);
 async function SearchInvoice() {
-    debugger;
-
+   
     let invoiceDate = {
         date: $("#searchDate").val().trim(),
     }
@@ -59,17 +57,58 @@ async function SearchInvoice() {
 
     $.post("/Home/SearchInvoice", invoiceDate, function (data) {
         debugger;
-        if (data.status == "Success") {
-            $('.new-user').modal('toggle');
-            swal({
-                title: "Success!",
-                text: data.message,
-                icon: "success",
-                button: "close",
-            });
-            location.reload();
+        console.log("data", data);
+        if (data.status) {
+            table = $('#table_id').DataTable({
+                destroy: true,
+                data: data.invoice,
+                columns: [
+                    {
+                        data: "CLientName",
+                        render: function (data, d, row) {
+                            return row.client.name;
+                        }
+                    },
+                    {
+                        data: "deliveryDate",
+                        render: function (data) {
+                            return data;
+                        }
+                    },
+                    {
+                        data: "amount",
+                        render: function (data) {
+                            return data;
+                        }
+                    },
+                    {
+                        data: "Currency",
+                        render: function (data, d, row) {
+                            return row.currency.name;
+                        }
+                    },
+                    {
+                        data: "Vat",
+                        render: function (data, d, row) {
+                            return row.vat.value;
+                        }
+                    },
+
+                    {
+                        data: "saleAgent",
+                        render: function (data, d, row) {
+                            return data;
+                        }
+                    },
+
+                ]
+            })
+
         } else {
-            toastr.error(data.message, 'Error', {
+            table = $('#table_id').DataTable({
+                destroy: true,
+            });
+            toastr.error('No invoice for selected date' , 'Error', {
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut",
                 timeOut: 3000

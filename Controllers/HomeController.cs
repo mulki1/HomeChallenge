@@ -26,7 +26,7 @@ namespace HomeChallenge.Controllers
                 Vats = _repository.GetVats(),
                 Clients = _repository.GetClients(),
             };
-            return View(dropdown);
+                return View(dropdown);
         }
 
         [HttpPost]
@@ -69,24 +69,21 @@ namespace HomeChallenge.Controllers
             try
             {
                 var result = await _repository.GetInvoice(invoiceDate.date);
-               // if (result)
+                if(result.Count > 0)
                 {
                     return Json(new
                     {
                         Status = true,
-                        Message = "Invoice Successfully Added!",
                         Invoice = result,
                     });
                 }
 
-                //something is wrong if the execution get here
-
                 return Json(new
                 {
                     Status = false,
-                    Message = "An error occured adding invoice, please again!",
-                });
+                    Message = "No invoice for specified date"
 
+                });
             }
             catch (Exception ex)
             {
@@ -96,11 +93,6 @@ namespace HomeChallenge.Controllers
                     Message = ex.InnerException.Message.ToString()
                 });
             }
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

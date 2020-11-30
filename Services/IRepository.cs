@@ -10,7 +10,7 @@ namespace HomeChallenge.Services
     {
         Task<bool> AddInvoice(Invoice invoice);
 
-        Task<Invoice> GetInvoice(DateTime date);
+        Task<List<Invoice>> GetInvoice(DateTime date);
         List<Currency> GetCurrencies();
         List<Vat> GetVats();
         List<Client> GetClients();

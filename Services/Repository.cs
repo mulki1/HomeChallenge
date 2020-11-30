@@ -34,11 +34,11 @@ namespace HomeChallenge.Services
         }
 
 
-        public async Task<Invoice> GetInvoice (DateTime date)
+        public async Task<List<Invoice>> GetInvoice (DateTime date)
         {
             try
             {
-                var invoices = _dbContext.Invoices.Include(c => c.Currency).Include(v => v.Vat).Include(cl => cl.Client).FirstOrDefault(i => i.InvoiceDate == date);
+                var invoices = _dbContext.Invoices.Include(c => c.Currency).Include(v => v.Vat).Include(cl => cl.Client).Where(i => i.InvoiceDate == date).ToList();
                 return invoices;
             }
             catch (Exception ex)
